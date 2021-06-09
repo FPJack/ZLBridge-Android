@@ -154,10 +154,10 @@ public class WebViewJavascriptBridge {
         public void callback(String name,Object body,JSCallback callBack);
     }
     @FunctionalInterface
-   public interface MessageHandler {
+   private interface MessageHandler {
         public void callback(MsgBody message);
     }
-    static public class JSInterface {
+    static private class JSInterface {
         private MessageHandler messageHandler;
         public JSInterface(MessageHandler messageHandler) {
             this.messageHandler = messageHandler;
@@ -185,7 +185,7 @@ public class WebViewJavascriptBridge {
         return data;
     }
 
-    static public class MsgBody {
+    static private class MsgBody {
         public String name;
         public String callID;
         public String jsMethodId;

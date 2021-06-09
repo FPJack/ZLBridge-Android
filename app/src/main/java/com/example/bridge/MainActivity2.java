@@ -9,6 +9,8 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
 
+import com.example.zlbridge.WebViewJavascriptBridge;
+
 import java.util.ArrayList;
 
 public class MainActivity2 extends AppCompatActivity {
