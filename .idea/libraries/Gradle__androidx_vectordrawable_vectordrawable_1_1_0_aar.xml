@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: androidx.vectordrawable:vectordrawable:1.1.0@aar">
+    <CLASSES>
+      <root url="file:///Volumes/fanpengSeagate/MacPro/User/fanpeng/caches/transforms-2/files-2.1/b72849ab756e4e5d270459a28674db5b/vectordrawable-1.1.0/AndroidManifest.xml" />
+      <root url="jar:///Volumes/fanpengSeagate/MacPro/User/fanpeng/caches/transforms-2/files-2.1/b72849ab756e4e5d270459a28674db5b/vectordrawable-1.1.0/jars/classes.jar!/" />
+      <root url="file:///Volumes/fanpengSeagate/MacPro/User/fanpeng/caches/transforms-2/files-2.1/b72849ab756e4e5d270459a28674db5b/vectordrawable-1.1.0/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar:///Volumes/fanpengSeagate/MacPro/User/fanpeng/caches/modules-2/files-2.1/androidx.vectordrawable/vectordrawable/1.1.0/1e0694477eed874c50c54b547cc3e5a62a57a62b/vectordrawable-1.1.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

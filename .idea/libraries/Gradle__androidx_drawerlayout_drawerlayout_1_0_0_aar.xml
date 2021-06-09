@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: androidx.drawerlayout:drawerlayout:1.0.0@aar">
+    <ANNOTATIONS>
+      <root url="jar:///Volumes/fanpengSeagate/MacPro/User/fanpeng/caches/transforms-2/files-2.1/a5af2b049a650486a43c39d7fc30c1fc/drawerlayout-1.0.0/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="file:///Volumes/fanpengSeagate/MacPro/User/fanpeng/caches/transforms-2/files-2.1/a5af2b049a650486a43c39d7fc30c1fc/drawerlayout-1.0.0/AndroidManifest.xml" />
+      <root url="jar:///Volumes/fanpengSeagate/MacPro/User/fanpeng/caches/transforms-2/files-2.1/a5af2b049a650486a43c39d7fc30c1fc/drawerlayout-1.0.0/jars/classes.jar!/" />
+      <root url="file:///Volumes/fanpengSeagate/MacPro/User/fanpeng/caches/transforms-2/files-2.1/a5af2b049a650486a43c39d7fc30c1fc/drawerlayout-1.0.0/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar:///Volumes/fanpengSeagate/MacPro/User/fanpeng/caches/modules-2/files-2.1/androidx.drawerlayout/drawerlayout/1.0.0/9ecd4ecb7da215ba4c5c3e00bf8d290dad6f2bc5/drawerlayout-1.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

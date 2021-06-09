@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: androidx.activity:activity:1.0.0@aar">
+    <CLASSES>
+      <root url="file:///Volumes/fanpengSeagate/MacPro/User/fanpeng/caches/transforms-2/files-2.1/59ba8ab8f4df087653b9642ce19c2923/jetified-activity-1.0.0/AndroidManifest.xml" />
+      <root url="jar:///Volumes/fanpengSeagate/MacPro/User/fanpeng/caches/transforms-2/files-2.1/59ba8ab8f4df087653b9642ce19c2923/jetified-activity-1.0.0/jars/classes.jar!/" />
+      <root url="file:///Volumes/fanpengSeagate/MacPro/User/fanpeng/caches/transforms-2/files-2.1/59ba8ab8f4df087653b9642ce19c2923/jetified-activity-1.0.0/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar:///Volumes/fanpengSeagate/MacPro/User/fanpeng/caches/modules-2/files-2.1/androidx.activity/activity/1.0.0/28eb83e6a29ac3fbb87aa632cfa0e644a313f491/activity-1.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

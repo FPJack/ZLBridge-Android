@@ -134,27 +134,27 @@ public class WebViewJavascriptBridge {
         });
     }
     @FunctionalInterface
-    interface JSMethodExist{
+   public interface JSMethodExist{
         public void callback(boolean exist);
     }
     @FunctionalInterface
-    interface  JSCallback {
+   public interface  JSCallback {
         public void callback(Object value,boolean end);
     }
     @FunctionalInterface
-    interface EvaluateJSResultCallback {
+   public interface EvaluateJSResultCallback {
         public void onReceiveValue(Object value);
     }
     @FunctionalInterface
-    interface RegisterJSHandlerInterface {
+   public interface RegisterJSHandlerInterface {
         public void callback(Object body,JSCallback callBack);
     }
     @FunctionalInterface
-    interface RegisterJSUndefinedHandlerInterface {
+   public interface RegisterJSUndefinedHandlerInterface {
         public void callback(String name,Object body,JSCallback callBack);
     }
     @FunctionalInterface
-    interface MessageHandler {
+   public interface MessageHandler {
         public void callback(MsgBody message);
     }
     static public class JSInterface {

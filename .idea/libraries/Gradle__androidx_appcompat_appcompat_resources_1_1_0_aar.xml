@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: androidx.appcompat:appcompat-resources:1.1.0@aar">
+    <CLASSES>
+      <root url="file:///Volumes/fanpengSeagate/MacPro/User/fanpeng/caches/transforms-2/files-2.1/88e6a0fe00669a5ca65e60f86f1a0e64/jetified-appcompat-resources-1.1.0/AndroidManifest.xml" />
+      <root url="jar:///Volumes/fanpengSeagate/MacPro/User/fanpeng/caches/transforms-2/files-2.1/88e6a0fe00669a5ca65e60f86f1a0e64/jetified-appcompat-resources-1.1.0/jars/classes.jar!/" />
+      <root url="file:///Volumes/fanpengSeagate/MacPro/User/fanpeng/caches/transforms-2/files-2.1/88e6a0fe00669a5ca65e60f86f1a0e64/jetified-appcompat-resources-1.1.0/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar:///Volumes/fanpengSeagate/MacPro/User/fanpeng/caches/modules-2/files-2.1/androidx.appcompat/appcompat-resources/1.1.0/a7dcffd1afb81e3c892ad061b33da031c2d7289f/appcompat-resources-1.1.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
