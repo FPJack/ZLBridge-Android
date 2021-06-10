@@ -45,13 +45,9 @@
             document.getElementById("b2").innerHTML = JSON.stringify(arg);
         });
     }
-    document.addEventListener(
-            'ZLBridgeInitReady'
-            , function() {
-            window.ZLBridge.call('test');
-         },
-            false
-        );
+    document.addEventListener('ZLBridgeInitReady', function() {
+        consloe.log('ZLBridge初始化完成');
+    },false);
     </script>
     <title>Document</title>
 </head>

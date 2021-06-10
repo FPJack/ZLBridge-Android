@@ -11,7 +11,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Requirements
 
-## Installation
+## 安装
 
 ZLBridge is available through [CocoaPods](https://cocoapods.org). To install
 it, simply add the following line to your Podfile:
@@ -34,10 +34,10 @@ dependencies {
 # WebViewClient里注入本地JS代码
 ```Java
 		@Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-            bridge.injectLocalJS(true);
-        }
+    public void onPageFinished(WebView view, String url) {
+      super.onPageFinished(view, url);
+      bridge.injectLocalJS(true);
+    }
 ```
 
 # 原生与JS交互
@@ -58,15 +58,15 @@ dependencies {
 ```
 ### 原生注册test事件
 ```Java
-        bridge.registHandler("test", new WebViewJavascriptBridge.RegisterJSHandlerInterface() {
-            @Override
-            public void callback(Object body, WebViewJavascriptBridge.JSCallback callBack) {
-                ArrayList list = new ArrayList();
-                list.add("js调用了原生");
-                list.add(body);
-                callBack.callback(list,true);
-            }
-        });
+    bridge.registHandler("test", new WebViewJavascriptBridge.RegisterJSHandlerInterface() {
+        @Override
+        public void callback(Object body, WebViewJavascriptBridge.JSCallback callBack) {
+          ArrayList list = new ArrayList();
+          list.add("js调用了原生");
+          list.add(body);
+          callBack.callback(list,true);
+       }
+     });
 ```
 
 
@@ -74,12 +74,14 @@ dependencies {
 
 ### 原生调用JS的jsMethod事件
 ```objective-c
-         bridge.callHander("jsMethod",list, new WebViewJavascriptBridge.EvaluateJSResultCallback() {
-              @Override
-              public void onReceiveValue(Object value,String error) {
-                   Log.d("MainActivity", "value:" + value);
-              }
-         });
+    ArrayList list = new ArrayList();
+    list.add("已收到原生调用js传过来的值");
+    bridge.callHander("jsMethod",list, new WebViewJavascriptBridge.EvaluateJSResultCallback() {
+        @Override
+        public void onReceiveValue(Object value,String error) {
+            Log.d("MainActivity", "value:" + value);
+        }
+    });
 ```
 
 ### js注册jsMethod事件
@@ -95,6 +97,14 @@ window.ZLBridge.register("jsMethod",(arg) => {
      callback(arg,true);
   });
   ```
+
+# JS监听ZLBridge初始化完成
+```JavaScript
+ document.addEventListener('ZLBridgeInitReady', function() {
+        consloe.log('ZLBridge初始化完成');
+    },false);
+  ```
+
 ## Author
 
 范鹏, 2551412939@qq.com
