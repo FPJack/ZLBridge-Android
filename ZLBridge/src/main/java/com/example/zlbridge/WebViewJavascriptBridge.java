@@ -14,18 +14,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 public class WebViewJavascriptBridge {
-    private WebView webView;
+    private WeakReference<WebView> weakWebViewReference;
     private boolean localJS;
     private HashMap<String,RegisterJSHandlerInterface> jsCallbackMap;
     private HashMap<String,EvaluateJSResultCallback> jsResultCallbackHashMap;
     private RegisterJSUndefinedHandlerInterface registerJSUndefinedHandlerInterface;
     static final String INTERFACE_OBJECT_NAME = "androidBridge";
     public WebViewJavascriptBridge(final WebView webView){
-        this.webView = webView;
+        this.weakWebViewReference = new WeakReference(webView);
         jsCallbackMap = new HashMap<>();
         jsResultCallbackHashMap = new HashMap<>();
         webView.addJavascriptInterface(new JSInterface(new MessageHandler() {
@@ -65,16 +66,18 @@ public class WebViewJavascriptBridge {
         }),INTERFACE_OBJECT_NAME);
         webView.getSettings().setJavaScriptEnabled(true);
     }
-    public void destroyBridge(){
-        jsCallbackMap = null;
-        jsResultCallbackHashMap = null;
-        webView.removeJavascriptInterface(INTERFACE_OBJECT_NAME);
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        jsCallbackMap.clear();
+        jsResultCallbackHashMap.clear();
+       weakWebViewReference.get().removeJavascriptInterface(INTERFACE_OBJECT_NAME);
     }
     public void injectLocalJS(boolean localJS){
         if (this.localJS) return;
         this.localJS = localJS;
         try {
-            String js = assetFile2Str(webView.getContext(),"ZLBridge.js");
+            String js = assetFile2Str(weakWebViewReference.get().getContext(),"ZLBridge.js");
             evaluateJavascript(js, new ValueCallback<String>() {
                 @Override
                 public void onReceiveValue(String value) {
@@ -174,9 +177,9 @@ public class WebViewJavascriptBridge {
             @Override
             public void run() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    webView.evaluateJavascript(js,valueCallback);
+                    weakWebViewReference.get().evaluateJavascript(js,valueCallback);
                 }else {
-                    webView.loadUrl("javascript:" + js);
+                    weakWebViewReference.get().loadUrl("javascript:" + js);
                     valueCallback.onReceiveValue(null);
                 }
             }

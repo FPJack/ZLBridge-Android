@@ -74,7 +74,6 @@ public class MainActivity2 extends AppCompatActivity {
      */
     @Override
     public void finalize(){
-        bridge.destroyBridge();
         Log.d("MainActivity2", "销毁了");
     }
 }
