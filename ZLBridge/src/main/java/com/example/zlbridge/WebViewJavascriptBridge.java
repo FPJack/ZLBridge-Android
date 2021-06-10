@@ -134,30 +134,30 @@ public class WebViewJavascriptBridge {
         });
     }
     @FunctionalInterface
-    interface JSMethodExist{
+    public interface JSMethodExist{
         public void callback(boolean exist);
     }
     @FunctionalInterface
-    interface  JSCallback {
+    public interface  JSCallback {
         public void callback(Object value,boolean end);
     }
     @FunctionalInterface
-    interface EvaluateJSResultCallback {
+    public interface EvaluateJSResultCallback {
         public void onReceiveValue(Object value,String error);
     }
     @FunctionalInterface
-    interface RegisterJSHandlerInterface {
+    public interface RegisterJSHandlerInterface {
         public void callback(Object body,JSCallback callBack);
     }
     @FunctionalInterface
-    interface RegisterJSUndefinedHandlerInterface {
+    public interface RegisterJSUndefinedHandlerInterface {
         public void callback(String name,Object body,JSCallback callBack);
     }
     @FunctionalInterface
-    interface MessageHandler {
+    private interface MessageHandler {
         public void callback(MsgBody message);
     }
-    static public class JSInterface {
+    static private class JSInterface {
         private MessageHandler messageHandler;
         public JSInterface(MessageHandler messageHandler) {
             this.messageHandler = messageHandler;
@@ -185,7 +185,7 @@ public class WebViewJavascriptBridge {
         return data;
     }
 
-    static public class MsgBody {
+    static private class MsgBody {
         public String name;
         public String callID;
         public String jsMethodId;

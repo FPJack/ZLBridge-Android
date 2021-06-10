@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 list.add("已收到原生调用js传过来的值");
                 bridge.callHander("jsMethodWithCallback",list, new WebViewJavascriptBridge.EvaluateJSResultCallback() {
                     @Override
-                    public void onReceiveValue(Object value) {
+                    public void onReceiveValue(Object value,String error) {
                         Log.d("MainActivity", "value:" + value);
                     }
                 });
