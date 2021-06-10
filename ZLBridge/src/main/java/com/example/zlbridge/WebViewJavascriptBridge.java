@@ -36,11 +36,12 @@ public class WebViewJavascriptBridge {
                 String callID = message.callID;
                 boolean end = message.end;
                 Object body = message.body;
+                String error = message.error;
                 final String jsMethodId = message.jsMethodId;
-                if (!TextUtils.isEmpty(callID)) {
+                if (!TextUtils.isEmpty(callID) && callID.length() > 0) {
                     EvaluateJSResultCallback jsCallback = jsResultCallbackHashMap.get(callID);
                     if (jsCallback != null) {
-                        jsCallback.onReceiveValue(body,null);
+                        jsCallback.onReceiveValue(body,error);
                         if (end) jsResultCallbackHashMap.remove(callID);
                     }
                     return;
@@ -159,16 +160,12 @@ public class WebViewJavascriptBridge {
         evaluateJavascript(js, new ValueCallback<String>() {
             @Override
             public void onReceiveValue(String value) {
+                if (value == null || value.equals("null")) return;
                 HashMap map = WebViewJavascriptBridge.converToMapWithString(value);
-                Object sync = map.get("sync");
-                Object result = map.get("result");
                 Object error = map.get("error");
-                if (sync instanceof Boolean) {
-                    if ((boolean)sync){
-                        jsResultCallbackHashMap.remove(finalID);
-                        if (completion != null) completion.onReceiveValue(result,error instanceof String ? (String) error : null);
-                    }
-                }
+                if (error == null) return;
+                jsResultCallbackHashMap.remove(finalID);
+                if (completion != null) completion.onReceiveValue(null,error instanceof String ? (String) error : null);
             }
         });
     }
@@ -221,7 +218,7 @@ public class WebViewJavascriptBridge {
     }
     static private HashMap converToMapWithString(String string) {
         HashMap data = new HashMap();
-        if (string == null || string == "null") return data;
+        if (string == null || string.equals("null")) return data;
         try {
             JSONObject jsonObject = new JSONObject(string);
             Iterator it = jsonObject.keys();
@@ -243,12 +240,14 @@ public class WebViewJavascriptBridge {
         public String jsMethodId;
         public Object body;
         public boolean end;
+        public String error;
         static MsgBody initModel(String message) {
             MsgBody body = new MsgBody();
             HashMap data = WebViewJavascriptBridge.converToMapWithString(message);
             body.name = (String) data.get("name");
             body.body = data.get("body");
             body.callID = (String) data.get("callID");
+            body.error = (String) data.get("error");
             body.jsMethodId = (String)data.get("jsMethodId");
             body.end = (boolean) data.get("end");
             return body;

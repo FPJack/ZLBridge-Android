@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ArrayList list = new ArrayList();
-                list.add("已收到原生调用js传过来的值");
+                list.add("已收到原生调用js传过来的值22");
                 bridge.callHander("jsMethod",list, new WebViewJavascriptBridge.EvaluateJSResultCallback() {
                     @Override
                     public void onReceiveValue(Object value,String error) {

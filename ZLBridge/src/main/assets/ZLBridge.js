@@ -38,17 +38,20 @@
              }
          },
          _nativeCall: function(method,arg) {
+             var obj = JSON.parse(arg);
+             var result = obj['result'];
+             var callID = obj['callID'];
              setTimeout(() => {
                    try {
-                        var obj = JSON.parse(arg);
-                        var result = obj['result'];
                         var func = window.ZLBridge['_register_' + method];
                         if (typeof func == 'function') {
-                            var funcResult = func(result);
-                            return {sync:true,result:funcResult};
+                            var args = {};
+                            args['end'] = true;
+                            if (callID) args['callID'] = callID;
+                            args['body'] = func(result);
+                            return window.ZLBridge._callNative(args);
                         }
                         func = window.ZLBridge['_register_callback' + method];
-                        var callID = obj['callID'];
                         var callback = function (params,end) {
                             var args = {};
                             if (callID) args['callID'] = callID;
@@ -59,16 +62,18 @@
                         func(result,callback);
                       } catch (error) {
                         console.log(error);
-                        return {sync:true,error:error.message};
+                        window.ZLBridge._callNative({error:error.message,callID:callID,end:true});
                    }
             });
          },
          _nativeCallback: function(methodid,arg){
-             var func = window.ZLBridge[methodid];
-             if (typeof func != 'function') return;
-             arg = JSON.parse(arg);
-             func(arg['result']);
-             if (arg.end==1) delete window.ZLBridge[methodid];
+             setTimeout(() => {
+                var func = window.ZLBridge[methodid];
+                if (typeof func != 'function') return;
+                arg = JSON.parse(arg);
+                func(arg['result']);
+                if (arg.end==1) delete window.ZLBridge[methodid];
+             });
          },
          _hasNativeMethod: function(method) {
              var func = window.ZLBridge['_register_' + method];
