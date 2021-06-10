@@ -23,7 +23,7 @@ public class MainActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
         webView = findViewById(R.id.webview);
 
-        final WebViewJavascriptBridge bridge = new WebViewJavascriptBridge(webView,true);
+        final WebViewJavascriptBridge bridge = new WebViewJavascriptBridge(webView);
         bridge.registHandler("test", new WebViewJavascriptBridge.RegisterJSHandlerInterface() {
             @Override
             public void callback(Object body, WebViewJavascriptBridge.JSCallback callBack) {

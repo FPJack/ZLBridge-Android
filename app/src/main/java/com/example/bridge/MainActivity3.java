@@ -12,6 +12,6 @@ public class MainActivity3 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
-        WebViewJavascriptBridge bridge = new WebViewJavascriptBridge(null,true);
+//        WebViewJavascriptBridge bridge = new WebViewJavascriptBridge(null,true);
     }
 }

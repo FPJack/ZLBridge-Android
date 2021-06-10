@@ -1,18 +1,17 @@
-package com.example.zlbridge;
+package com.example.bridge;
+
 import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
-import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,8 +23,9 @@ public class WebViewJavascriptBridge {
     private HashMap<String,EvaluateJSResultCallback> jsResultCallbackHashMap;
     private RegisterJSUndefinedHandlerInterface registerJSUndefinedHandlerInterface;
     static final String INTERFACE_OBJECT_NAME = "androidBridge";
-    public WebViewJavascriptBridge(final WebView webView){
+    public WebViewJavascriptBridge(final WebView webView, final boolean localJS){
         this.webView = webView;
+        this.localJS = localJS;
         jsCallbackMap = new HashMap<>();
         jsResultCallbackHashMap = new HashMap<>();
         webView.addJavascriptInterface(new JSInterface(new MessageHandler() {
@@ -65,54 +65,27 @@ public class WebViewJavascriptBridge {
         }),INTERFACE_OBJECT_NAME);
         webView.getSettings().setJavaScriptEnabled(true);
     }
+
+    public String getFromRaw(){
+
+//        try {
+//            Context context;
+//            InputStreamReader inputReader = new InputStreamReader(context.getResources().openRawResource(R.raw.test1));
+//            BufferedReader bufReader = new BufferedReader(inputReader);
+//            String line="";
+//            String Result="";
+//            while((line = bufReader.readLine()) != null)
+//                Result += line;
+//            return Result;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        return "";
+    }
     public void destroyBridge(){
         jsCallbackMap = null;
         jsResultCallbackHashMap = null;
         webView.removeJavascriptInterface(INTERFACE_OBJECT_NAME);
-    }
-    public void injectLocalJS(boolean localJS){
-        if (this.localJS) return;
-        this.localJS = localJS;
-        try {
-            String js = assetFile2Str(webView.getContext(),"ZLBridge.js");
-            evaluateJavascript(js, new ValueCallback<String>() {
-                @Override
-                public void onReceiveValue(String value) {
-                    Log.d("WebViewJavascriptBridge", value);
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    public static String assetFile2Str(Context c, String urlStr){
-        InputStream in = null;
-        try{
-            in = c.getAssets().open(urlStr);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
-            String line = null;
-            StringBuilder sb = new StringBuilder();
-            do {
-                line = bufferedReader.readLine();
-                if (line != null && !line.matches("^\\s*\\/\\/.*")) { // 去除注释
-                    sb.append(line);
-                }
-            } while (line != null);
-            bufferedReader.close();
-            in.close();
-            return sb.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if(in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return null;
     }
     public void registHandler(String name,RegisterJSHandlerInterface registerJSHandlerInterface){
         if (TextUtils.isEmpty(name)||registerJSHandlerInterface == null) return;
@@ -218,7 +191,7 @@ public class WebViewJavascriptBridge {
     }
     static private HashMap converToMapWithString(String string) {
         HashMap data = new HashMap();
-        if (string == null || string == "null") return data;
+        if (string == null) return data;
         try {
             JSONObject jsonObject = new JSONObject(string);
             Iterator it = jsonObject.keys();

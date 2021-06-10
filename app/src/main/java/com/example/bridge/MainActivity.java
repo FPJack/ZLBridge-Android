@@ -2,25 +2,20 @@ package com.example.bridge;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
-import android.webkit.ValueCallback;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.zlbridge.WebViewJavascriptBridge;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+//import com.example.bridge.WebViewJavascriptBridge;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -50,8 +45,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         webView = findViewById(R.id.webview);
-
-        final WebViewJavascriptBridge bridge = new WebViewJavascriptBridge(webView,true);
+        final WebViewJavascriptBridge bridge = new WebViewJavascriptBridge(webView);
         bridge.registHandler("test", new WebViewJavascriptBridge.RegisterJSHandlerInterface() {
             @Override
             public void callback(Object body, WebViewJavascriptBridge.JSCallback callBack) {
@@ -73,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         bridge.registUndefinedHandler(new WebViewJavascriptBridge.RegisterJSUndefinedHandlerInterface() {
             @Override
             public void callback(String name, Object body, WebViewJavascriptBridge.JSCallback callBack) {
-
                 textView.setText("收到原生未监听的js调用事件" +name );
                 Log.d("MainActivity", name);
             }
@@ -110,7 +103,19 @@ public class MainActivity extends AppCompatActivity {
 
         });
         webView.loadUrl("file:///android_asset/web/index.html");
+        webView.setWebViewClient(new Client(bridge));
 
+    }
+    class Client extends WebViewClient {
+        WebViewJavascriptBridge bridge;
+        Client(WebViewJavascriptBridge bridge) {
+            this.bridge = bridge;
+        }
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            bridge.injectLocalJS(true);
+        }
     }
 
     /**
