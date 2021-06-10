@@ -28,16 +28,16 @@ dependencies {
 ```
 # 初始化
 ```Java
-		WebViewJavascriptBridge bridge = new WebViewJavascriptBridge(webView);
+WebViewJavascriptBridge bridge = new WebViewJavascriptBridge(webView);
 ```
 
 # WebViewClient里注入本地JS代码
 ```Java
-		@Override
-    public void onPageFinished(WebView view, String url) {
-      super.onPageFinished(view, url);
-      bridge.injectLocalJS(true);
-    }
+@Override
+public void onPageFinished(WebView view, String url) {
+  super.onPageFinished(view, url);
+  bridge.injectLocalJS(true);
+}
 ```
 
 # 原生与JS交互
@@ -46,27 +46,27 @@ dependencies {
 
 ### 无参数
 ```JavaScript
-	window.ZLBridge.call('test',(arg) => {
+window.ZLBridge.call('test',(arg) => {
 
-	});
+});
 ```
 ### 有参数参数
 ```JavaScript
-	window.ZLBridge.call('test',{key:"value"},(arg) => {
+window.ZLBridge.call('test',{key:"value"},(arg) => {
 
-	});
+});
 ```
 ### 原生注册test事件
 ```Java
-    bridge.registHandler("test", new WebViewJavascriptBridge.RegisterJSHandlerInterface() {
-        @Override
-        public void callback(Object body, WebViewJavascriptBridge.JSCallback callBack) {
-          ArrayList list = new ArrayList();
-          list.add("js调用了原生");
-          list.add(body);
-          callBack.callback(list,true);
-       }
-     });
+bridge.registHandler("test", new WebViewJavascriptBridge.RegisterJSHandlerInterface() {
+    @Override
+    public void callback(Object body, WebViewJavascriptBridge.JSCallback callBack) {
+      ArrayList list = new ArrayList();
+      list.add("js调用了原生");
+      list.add(body);
+      callBack.callback(list,true);
+   }
+});
 ```
 
 
@@ -74,35 +74,35 @@ dependencies {
 
 ### 原生调用JS的jsMethod事件
 ```objective-c
-    ArrayList list = new ArrayList();
-    list.add("已收到原生调用js传过来的值");
-    bridge.callHander("jsMethod",list, new WebViewJavascriptBridge.EvaluateJSResultCallback() {
-        @Override
-        public void onReceiveValue(Object value,String error) {
-            Log.d("MainActivity", "value:" + value);
-        }
-    });
+ArrayList list = new ArrayList();
+list.add("已收到原生调用js传过来的值");
+bridge.callHander("jsMethod",list, new WebViewJavascriptBridge.EvaluateJSResultCallback() {
+  @Override
+  public void onReceiveValue(Object value,String error) {
+      Log.d("MainActivity", "value:" + value);
+  }
+});
 ```
 
 ### js注册jsMethod事件
 ```JavaScript
 window.ZLBridge.register("jsMethod",(arg) => {
      return arg;
- });
+});
  ```
  或者
  ```JavaScript
- window.ZLBridge.registerWithCallback("jsMethod",(arg,callback) => {
-    //ture代表原生只能监听一次回调结果，false可以连续监听，默认传为true
-     callback(arg,true);
-  });
+window.ZLBridge.registerWithCallback("jsMethod",(arg,callback) => {
+  //ture代表原生只能监听一次回调结果，false可以连续监听，默认传为true
+  callback(arg,true);
+});
   ```
 
 # JS监听ZLBridge初始化完成
 ```JavaScript
- document.addEventListener('ZLBridgeInitReady', function() {
-        consloe.log('ZLBridge初始化完成');
-    },false);
+document.addEventListener('ZLBridgeInitReady', function() {
+    consloe.log('ZLBridge初始化完成');
+},false);
   ```
 
 ## Author
