@@ -46,24 +46,29 @@
         },
         //原生主动调用
         _nativeCall: function(method,arg) {
-            var obj = JSON.parse(arg);
-            var result = obj["result"];
-            var func = window.ZLBridge["_register_" + method];
-            if (typeof func == "function") {
-                var funcResult = func(result);
-                return {sync:true,result:funcResult};
+            try {
+                 var obj = JSON.parse(arg);
+                 var result = obj["result"];
+                 var func = window.ZLBridge["_register_" + method];
+                 if (typeof func == "function") {
+                     var funcResult = func(result);
+                     return {sync:true,result:funcResult};
+                 }
+                 func = window.ZLBridge["_register_callback" + method];
+                 var callID = obj["callID"];
+                 var callback = function (params,end) {
+                 var args = {};
+                 if (callID) args["callID"] = callID ;
+                 args["body"] = params;
+                 args["end"] = (typeof end == "boolean")?end:true;
+                 window.ZLBridge._callNative(args);
+                 }
+                 func(result,callback);
+                } catch (error) {
+                return {sync:true,error:error.message};
             }
-            func = window.ZLBridge["_register_callback" + method];
-            var callID = obj["callID"];
-            var callback = function (params,end) {
-                var args = {};
-                if (callID) args["callID"] = callID ;
-                args["body"] = params;
-                args["end"] = (typeof end == "boolean")?end:true;
-                window.ZLBridge._callNative(args);
-            }
-            func(result,callback);
         },
+
         //是否注册了原生方法
         _hasNativeMethod: function(method) {
             var func = window.ZLBridge["_register_" + method]

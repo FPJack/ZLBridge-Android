@@ -34,7 +34,7 @@ public class WebViewJavascriptBridge {
                 if (!TextUtils.isEmpty(callID)) {
                     EvaluateJSResultCallback jsCallback = jsResultCallbackHashMap.get(callID);
                     if (jsCallback != null) {
-                        jsCallback.onReceiveValue(body);
+                        jsCallback.onReceiveValue(body,null);
                         if (end) jsResultCallbackHashMap.remove(callID);
                     }
                     return;
@@ -63,7 +63,6 @@ public class WebViewJavascriptBridge {
     public void destroyBridge(){
         jsCallbackMap = null;
         jsResultCallbackHashMap = null;
-        registerJSUndefinedHandlerInterface = null;
         webView.removeJavascriptInterface(INTERFACE_OBJECT_NAME);
     }
     public void registHandler(String name,RegisterJSHandlerInterface registerJSHandlerInterface){
@@ -111,10 +110,11 @@ public class WebViewJavascriptBridge {
                 HashMap map = WebViewJavascriptBridge.converToMapWithString(value);
                 Object sync = map.get("sync");
                 Object result = map.get("result");
+                Object error = map.get("error");
                 if (sync instanceof Boolean) {
                     if ((boolean)sync){
                         jsResultCallbackHashMap.remove(finalID);
-                        if (completion != null) completion.onReceiveValue(result);
+                        if (completion != null) completion.onReceiveValue(result,error instanceof String ? (String) error : null);
                     }
                 }
             }
@@ -134,30 +134,30 @@ public class WebViewJavascriptBridge {
         });
     }
     @FunctionalInterface
-   public interface JSMethodExist{
+    interface JSMethodExist{
         public void callback(boolean exist);
     }
     @FunctionalInterface
-   public interface  JSCallback {
+    interface  JSCallback {
         public void callback(Object value,boolean end);
     }
     @FunctionalInterface
-   public interface EvaluateJSResultCallback {
-        public void onReceiveValue(Object value);
+    interface EvaluateJSResultCallback {
+        public void onReceiveValue(Object value,String error);
     }
     @FunctionalInterface
-   public interface RegisterJSHandlerInterface {
+    interface RegisterJSHandlerInterface {
         public void callback(Object body,JSCallback callBack);
     }
     @FunctionalInterface
-   public interface RegisterJSUndefinedHandlerInterface {
+    interface RegisterJSUndefinedHandlerInterface {
         public void callback(String name,Object body,JSCallback callBack);
     }
     @FunctionalInterface
-   private interface MessageHandler {
+    interface MessageHandler {
         public void callback(MsgBody message);
     }
-    static private class JSInterface {
+    static public class JSInterface {
         private MessageHandler messageHandler;
         public JSInterface(MessageHandler messageHandler) {
             this.messageHandler = messageHandler;
@@ -185,7 +185,7 @@ public class WebViewJavascriptBridge {
         return data;
     }
 
-    static private class MsgBody {
+    static public class MsgBody {
         public String name;
         public String callID;
         public String jsMethodId;
