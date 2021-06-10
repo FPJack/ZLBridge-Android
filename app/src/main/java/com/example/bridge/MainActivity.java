@@ -72,31 +72,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button button = findViewById(R.id.button);
+        final Button button = findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ArrayList list = new ArrayList();
-                list.add("已收到原生调用js传过来的值22");
+                list.add("已收到原生调用js事件1传过来的值");
                 bridge.callHander("jsMethod",list, new WebViewJavascriptBridge.EvaluateJSResultCallback() {
                     @Override
                     public void onReceiveValue(Object value,String error) {
+                         String text = error != null ? error : "点击原生调用js事件1";
+                        button.setText(text);
                         Log.d("MainActivity", "value:" + value);
                     }
                 });
             }
 
         });
-        Button button1 = findViewById(R.id.button1);
+       final Button button1 = findViewById(R.id.button1);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ArrayList list = new ArrayList();
-                list.add("已收到原生调用js传过来的值");
+                list.add("已收到原生调用js事件2传过来的值");
                 bridge.callHander("jsMethodWithCallback",list, new WebViewJavascriptBridge.EvaluateJSResultCallback() {
                     @Override
                     public void onReceiveValue(Object value,String error) {
-                        Log.d("MainActivity", "value:" + value);
+                        String text = error != null ? error : "点击原生调用js事件2";
+                        button1.setText(text);
                     }
                 });
             }

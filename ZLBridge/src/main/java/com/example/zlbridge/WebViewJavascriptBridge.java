@@ -33,21 +33,26 @@ public class WebViewJavascriptBridge {
             @Override
             public void callback(MsgBody message) {
                 final String name = message.name;
-                String callID = message.callID;
-                boolean end = message.end;
-                Object body = message.body;
-                String error = message.error;
+               final String callID = message.callID;
+               final boolean end = message.end;
+               final Object body = message.body;
+               final String error = message.error;
                 final String jsMethodId = message.jsMethodId;
                 if (!TextUtils.isEmpty(callID) && callID.length() > 0) {
-                    EvaluateJSResultCallback jsCallback = jsResultCallbackHashMap.get(callID);
+                   final EvaluateJSResultCallback jsCallback = jsResultCallbackHashMap.get(callID);
                     if (jsCallback != null) {
-                        jsCallback.onReceiveValue(body,error);
-                        if (end) jsResultCallbackHashMap.remove(callID);
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                jsCallback.onReceiveValue(body,error);
+                                if (end) jsResultCallbackHashMap.remove(callID);
+                            }
+                        });
                     }
                     return;
                 }
-                RegisterJSHandlerInterface registerJSHandlerInterface = jsCallbackMap.get(name);
-                JSCallback jsCallback = new JSCallback() {
+               final RegisterJSHandlerInterface registerJSHandlerInterface = jsCallbackMap.get(name);
+               final JSCallback jsCallback = new JSCallback() {
                     @Override
                     public void callback(Object value, boolean end) {
                         HashMap jsMap = new HashMap();
@@ -58,11 +63,16 @@ public class WebViewJavascriptBridge {
                         evaluateJavascript(js, null);
                     }
                 };
-                if (registerJSHandlerInterface == null) {
-                    registerJSUndefinedHandlerInterface.callback(name,body,jsCallback);
-                    return;
-                }
-                registerJSHandlerInterface.callback(body,jsCallback);
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (registerJSHandlerInterface == null) {
+                            registerJSUndefinedHandlerInterface.callback(name,body,jsCallback);
+                        }else {
+                            registerJSHandlerInterface.callback(body,jsCallback);
+                        }
+                    }
+                });
             }
         }),INTERFACE_OBJECT_NAME);
         webView.getSettings().setJavaScriptEnabled(true);
