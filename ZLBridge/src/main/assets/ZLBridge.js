@@ -21,7 +21,11 @@
              window.ZLBridge._callNative(args);
          },
           _callNative: function(arg) {
-                window.androidBridge.messageHandlers(JSON.stringify(arg));
+                if(window.androidBridge.messageHandlers){
+                   window.androidBridge.messageHandlers(JSON.stringify(arg));
+                }else if (window.webkit && window.webkit.messageHandlers){
+                   window.webkit.messageHandlers.ZLBridge.postMessage(arg);
+                }
            },
          register: function(method,func){
              if (typeof func == 'function' && typeof method == 'string') {
