@@ -1,1 +1,106 @@
-# ZLBridge-Android
+# ZLBridge
+
+[![CI Status](https://img.shields.io/travis/范鹏/ZLBridge.svg?style=flat)](https://travis-ci.org/范鹏/ZLBridge)
+[![Version](https://img.shields.io/cocoapods/v/ZLBridge.svg?style=flat)](https://cocoapods.org/pods/ZLBridge)
+[![License](https://img.shields.io/cocoapods/l/ZLBridge.svg?style=flat)](https://cocoapods.org/pods/ZLBridge)
+[![Platform](https://img.shields.io/cocoapods/p/ZLBridge.svg?style=flat)](https://cocoapods.org/pods/ZLBridge)
+
+## Example
+
+To run the example project, clone the repo, and run `pod install` from the Example directory first.
+
+## Requirements
+
+## Installation
+
+ZLBridge is available through [CocoaPods](https://cocoapods.org). To install
+it, simply add the following line to your Podfile:
+
+```ruby
+repositories {
+    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+	implementation 'com.github.FPJack:ZLBridge-Android:0.1.8'
+}
+
+```
+# 初始化
+```Java
+		WebViewJavascriptBridge bridge = new WebViewJavascriptBridge(webView);
+```
+
+# WebViewClient里注入本地JS代码
+```Java
+		@Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            bridge.injectLocalJS(true);
+        }
+```
+
+# 原生与JS交互
+
+## JS调用原生test事件
+
+### 无参数
+```JavaScript
+	window.ZLBridge.call('test',(arg) => {
+
+	});
+```
+### 有参数参数
+```JavaScript
+	window.ZLBridge.call('test',{key:"value"},(arg) => {
+
+	});
+```
+### 原生注册test事件
+```Java
+        bridge.registHandler("test", new WebViewJavascriptBridge.RegisterJSHandlerInterface() {
+            @Override
+            public void callback(Object body, WebViewJavascriptBridge.JSCallback callBack) {
+                ArrayList list = new ArrayList();
+                list.add("js调用了原生");
+                list.add(body);
+                callBack.callback(list,true);
+            }
+        });
+```
+
+
+## 原生调用js
+
+### 原生调用JS的jsMethod事件
+```objective-c
+         bridge.callHander("jsMethod",list, new WebViewJavascriptBridge.EvaluateJSResultCallback() {
+              @Override
+              public void onReceiveValue(Object value,String error) {
+                   Log.d("MainActivity", "value:" + value);
+              }
+         });
+```
+
+### js注册jsMethod事件
+```JavaScript
+window.ZLBridge.register("jsMethod",(arg) => {
+     return arg;
+ });
+ ```
+ 或者
+ ```JavaScript
+ window.ZLBridge.registerWithCallback("jsMethod",(arg,callback) => {
+    //ture代表原生只能监听一次回调结果，false可以连续监听，默认传为true
+     callback(arg,true);
+  });
+  ```
+## Author
+
+范鹏, 2551412939@qq.com
+
+
+
+## License
+
+ZLBridge is available under the MIT license. See the LICENSE file for more info.
