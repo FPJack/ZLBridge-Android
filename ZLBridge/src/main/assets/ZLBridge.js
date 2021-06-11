@@ -14,7 +14,7 @@
             args['callID'] = '';
             if (typeof func == 'function') {
                 var _callHandlerID = setTimeout(function(){});
-                _callHandlerID = '_methodid_' + _callHandlerID;
+                _callHandlerID = '_methodid_' + _callHandlerID + new Date().getTime();
                 args['jsMethodId'] = _callHandlerID ;
                 window.ZLBridge[_callHandlerID] = func;
             }
@@ -23,7 +23,7 @@
          _callNative: function(arg) {
                if(window.androidBridge && window.androidBridge.messageHandlers){
                   window.androidBridge.messageHandlers(JSON.stringify(arg));
-               }else if (window.webkit && window.webkit.messageHandlers){
+               }else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.ZLBridge){
                   window.webkit.messageHandlers.ZLBridge.postMessage(JSON.stringify(arg));
                }
           },
@@ -32,6 +32,10 @@
                 window.ZLBridge['_register_' + method] = func;
             }
         },
+        removeRegisted: function(method) {
+            var id = '_register_' + method;
+            if (typeof method == 'string' && window.ZLBridge[id]) delete window.ZLBridge[id];
+         },
         registerWithCallback: function(method,func){
             if (typeof func == 'function' && typeof method == 'string') {
                 window.ZLBridge['_register_callback' + method] = func;
@@ -61,7 +65,6 @@
                        };
                        func(result,callback);
                      } catch (error) {
-                       console.log(error);
                        window.ZLBridge._callNative({error:error.message,callID:callID,end:true});
                   }
            });

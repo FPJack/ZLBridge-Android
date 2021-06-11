@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            bridge.injectLocalJS(true);
+            bridge.injectLocalJS();
         }
     }
 

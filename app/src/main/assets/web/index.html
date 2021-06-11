@@ -12,6 +12,7 @@
     </style>
     <script type="text/javascript">
      function onClickB1() {
+
         window.ZLBridge.call('test',(arg) => {
             document.getElementById("b1").innerHTML = JSON.stringify(arg);
         });

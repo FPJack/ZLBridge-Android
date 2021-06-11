@@ -84,9 +84,9 @@ public class WebViewJavascriptBridge {
         jsResultCallbackHashMap.clear();
        weakWebViewReference.get().removeJavascriptInterface(INTERFACE_OBJECT_NAME);
     }
-    public void injectLocalJS(boolean localJS){
+    public void injectLocalJS(){
         if (this.localJS) return;
-        this.localJS = localJS;
+        this.localJS = true;
         try {
             String js = assetFile2Str(weakWebViewReference.get().getContext(),"ZLBridge.js");
             evaluateJavascript(js, new ValueCallback<String>() {
@@ -131,6 +131,12 @@ public class WebViewJavascriptBridge {
     public void registHandler(String name,RegisterJSHandlerInterface registerJSHandlerInterface){
         if (TextUtils.isEmpty(name)||registerJSHandlerInterface == null) return;
         jsCallbackMap.put(name,registerJSHandlerInterface);
+    }
+    public void removeRegistedHandler(String name) {
+        if (name instanceof String) jsCallbackMap.remove(name);
+    }
+    public void removeAllRegistedHandler(){
+        jsCallbackMap.clear();
     }
     public void registUndefinedHandler(RegisterJSUndefinedHandlerInterface registerJSUndefinedHandlerInterface){
         this.registerJSUndefinedHandlerInterface = registerJSUndefinedHandlerInterface;
@@ -206,11 +212,11 @@ public class WebViewJavascriptBridge {
     }
     @FunctionalInterface
     public interface RegisterJSHandlerInterface {
-        public void callback(Object body,JSCallback callBack);
+        public void callback(Object body,JSCallback jsCallBack);
     }
     @FunctionalInterface
     public interface RegisterJSUndefinedHandlerInterface {
-        public void callback(String name,Object body,JSCallback callBack);
+        public void callback(String name,Object body,JSCallback jsCallBack);
     }
     @FunctionalInterface
     private interface MessageHandler {
