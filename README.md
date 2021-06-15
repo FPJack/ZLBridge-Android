@@ -31,13 +31,18 @@ dependencies {
 WebViewJavascriptBridge bridge = new WebViewJavascriptBridge(webView);
 ```
 
-# WebViewClient里注入本地JS代码
+# ZLBridge初始化
+原生初始化ZLBridge
 ```Java
 @Override
 public void onPageFinished(WebView view, String url) {
   super.onPageFinished(view, url);
   bridge.injectLocalJS(true);
 }
+```
+或者H5初始化ZLBridge
+```JavaScript
+ var ZLBridge = require('zlbridge-js')
 ```
 
 # 原生与JS交互
@@ -98,7 +103,7 @@ window.ZLBridge.registerWithCallback("jsMethod",(arg,callback) => {
 });
   ```
 
-# JS监听ZLBridge初始化完成
+# 通过本地注入JS脚本的，H5可以监听ZLBridge初始化完成
 ```JavaScript
 document.addEventListener('ZLBridgeInitReady', function() {
     consloe.log('ZLBridge初始化完成');

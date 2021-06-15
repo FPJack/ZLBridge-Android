@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
         webView.loadUrl("file:///android_asset/web/index.html");
+//        webView.loadUrl("http://192.168.88.94:3000");
         webView.setWebViewClient(new Client(bridge));
 
     }
