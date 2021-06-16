@@ -24,7 +24,7 @@ public class WebViewJavascriptBridge {
     private HashMap<String,RegisterJSHandlerInterface> jsCallbackMap;
     private HashMap<String,EvaluateJSResultCallback> jsResultCallbackHashMap;
     private RegisterJSUndefinedHandlerInterface registerJSUndefinedHandlerInterface;
-    static final String INTERFACE_OBJECT_NAME = "androidBridge";
+    static final String INTERFACE_OBJECT_NAME = "ZLBridge";
     public WebViewJavascriptBridge(final WebView webView){
         this.weakWebViewReference = new WeakReference(webView);
         jsCallbackMap = new HashMap<>();
@@ -59,7 +59,7 @@ public class WebViewJavascriptBridge {
                         jsMap.put("end",end?1:0);
                         jsMap.put("result",value);
                         JSONObject jsonObject = new JSONObject(jsMap);
-                        final String js = "window.ZLBridge._nativeCallback('"+ jsMethodId +"'," + "'" + jsonObject.toString() +"');";
+                        final String js = "window.zlbridge._nativeCallback('"+ jsMethodId +"'," + "'" + jsonObject.toString() +"');";
                         evaluateJavascript(js, null);
                     }
                 };
@@ -99,7 +99,7 @@ public class WebViewJavascriptBridge {
             e.printStackTrace();
         }
     }
-    public static String assetFile2Str(Context c, String urlStr){
+    private static String assetFile2Str(Context c, String urlStr){
         InputStream in = null;
         try{
             in = c.getAssets().open(urlStr);
@@ -150,7 +150,7 @@ public class WebViewJavascriptBridge {
             jsMethodExist.callback(false);
             return;
         }
-        String js = "window.ZLBridge._hasNativeMethod('"+ name +"');";
+        String js = "window.zlbridge._hasNativeMethod('"+ name +"');";
         evaluateJavascript(js, new ValueCallback<String>() {
             @Override
             public void onReceiveValue(String value) {
@@ -171,7 +171,7 @@ public class WebViewJavascriptBridge {
             jsResultCallbackHashMap.put(ID,completion);
         }
         JSONObject jsonObject = new JSONObject(jsMap);
-        String js = "window.ZLBridge._nativeCall('"+ name +"'," + "'" + jsonObject.toString() +"');";
+        String js = "window.zlbridge._nativeCall('"+ name +"'," + "'" + jsonObject.toString() +"');";
         final String finalID = ID;
         evaluateJavascript(js, new ValueCallback<String>() {
             @Override
@@ -228,7 +228,7 @@ public class WebViewJavascriptBridge {
             this.messageHandler = messageHandler;
         }
         @JavascriptInterface
-        public void messageHandlers(String message) {
+        public void postMessage(String message) {
             messageHandler.callback(MsgBody.initModel(message));
         }
     }
