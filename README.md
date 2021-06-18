@@ -32,7 +32,7 @@ public void onPageFinished(WebView view, String url) {
 或者H5端导入初始化
 ```JavaScript
  //导入一次后也可以通过全局window.zlbridge拿zlbridge对象
- var zlbridge = require('zlbridge-js')
+ var zlbridge = require('zlbridge')
 ```
 
 ## 原生与JS交互
