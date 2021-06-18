@@ -5,9 +5,6 @@
 [![License](https://img.shields.io/cocoapods/l/ZLBridge.svg?style=flat)](https://cocoapods.org/pods/ZLBridge)
 [![Platform](https://img.shields.io/cocoapods/p/ZLBridge.svg?style=flat)](https://cocoapods.org/pods/ZLBridge)
 
-## Example
-
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
 ## Requirements
 
@@ -66,6 +63,7 @@ bridge.registHandler("test", new ZLBridge.RegisterJSHandlerInterface() {
       ArrayList list = new ArrayList();
       list.add("js调用了原生");
       list.add(body);
+      //true：js调用一次test事件只能接受一次原生回调结果，false：可以接受多次回调结果
       callBack.callback(list,true);
    }
 });
@@ -106,6 +104,7 @@ document.addEventListener('ZLBridgeInitReady', function() {
     consloe.log('ZLBridge初始化完成');
 },false);
   ```
+# ！！！原生传给JS的值需要支持放入Map里面可以JSONObject的对象，例如boolean,String，int，List，Map,Set等等...
 
 ## Author
 
