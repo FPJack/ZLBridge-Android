@@ -12,7 +12,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.zlbridge.WebViewJavascriptBridge;
+import com.example.zlbridge.ZLBridge;
 //import com.example.bridge.WebViewJavascriptBridge;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     WebView webView;
     String [] abc;
     Handler handler=new Handler(Looper.getMainLooper());
-    WebViewJavascriptBridge.JSCallback jsCallback;
+    ZLBridge.JSCallback jsCallback;
     int time = 0;
     Runnable runnable=new Runnable() {
         @Override
@@ -45,28 +45,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         webView = findViewById(R.id.webview);
-        final WebViewJavascriptBridge bridge = new WebViewJavascriptBridge(webView);
-        bridge.registHandler("test", new WebViewJavascriptBridge.RegisterJSHandlerInterface() {
+        final ZLBridge bridge = new ZLBridge(webView);
+
+        bridge.registHandler("test", new ZLBridge.RegisterJSHandlerInterface() {
             @Override
-            public void callback(Object body, WebViewJavascriptBridge.JSCallback callBack) {
+            public void callback(Object body, ZLBridge.JSCallback callBack) {
                 ArrayList list = new ArrayList();
                 list.add("js调用了原生");
                 list.add(body);
                 callBack.callback(list,true);
             }
         });
-        bridge.registHandler("upload", new WebViewJavascriptBridge.RegisterJSHandlerInterface() {
+        bridge.registHandler("upload", new ZLBridge.RegisterJSHandlerInterface() {
             @Override
-            public void callback(Object body, WebViewJavascriptBridge.JSCallback completion) {
+            public void callback(Object body, ZLBridge.JSCallback completion) {
                 jsCallback = completion;
                 handler.postDelayed(runnable, 1000);
             }
         });
 
         final TextView textView = findViewById(R.id.text);
-        bridge.registUndefinedHandler(new WebViewJavascriptBridge.RegisterJSUndefinedHandlerInterface() {
+        bridge.registUndefinedHandler(new ZLBridge.RegisterJSUndefinedHandlerInterface() {
             @Override
-            public void callback(String name, Object body, WebViewJavascriptBridge.JSCallback callBack) {
+            public void callback(String name, Object body, ZLBridge.JSCallback callBack) {
                 textView.setText("收到原生未监听的js调用事件" +name );
                 Log.d("MainActivity", name);
             }
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ArrayList list = new ArrayList();
                 list.add("已收到原生调用js事件1传过来的值");
-                bridge.callHander("jsMethod",list, new WebViewJavascriptBridge.EvaluateJSResultCallback() {
+                bridge.callHander("jsMethod",list, new ZLBridge.EvaluateJSResultCallback() {
                     @Override
                     public void onReceiveValue(Object value,String error) {
                          String text = error != null ? error : "点击原生调用js事件1";
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ArrayList list = new ArrayList();
                 list.add("已收到原生调用js事件2传过来的值");
-                bridge.callHander("jsMethodWithCallback",list, new WebViewJavascriptBridge.EvaluateJSResultCallback() {
+                bridge.callHander("jsMethodWithCallback",list, new ZLBridge.EvaluateJSResultCallback() {
                     @Override
                     public void onReceiveValue(Object value,String error) {
                         String text = error != null ? error : "点击原生调用js事件2";
@@ -113,8 +114,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
     class Client extends WebViewClient {
-        WebViewJavascriptBridge bridge;
-        Client(WebViewJavascriptBridge bridge) {
+        ZLBridge bridge;
+        Client(ZLBridge bridge) {
             this.bridge = bridge;
         }
         @Override

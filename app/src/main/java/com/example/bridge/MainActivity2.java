@@ -9,39 +9,39 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
 
-import com.example.zlbridge.WebViewJavascriptBridge;
+import com.example.zlbridge.ZLBridge;
 
 import java.util.ArrayList;
 
 public class MainActivity2 extends AppCompatActivity {
     WebView webView;
     String [] abc;
-    WebViewJavascriptBridge bridge;
+    ZLBridge bridge;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         webView = findViewById(R.id.webview);
 
-        final WebViewJavascriptBridge bridge = new WebViewJavascriptBridge(webView);
-        bridge.registHandler("test", new WebViewJavascriptBridge.RegisterJSHandlerInterface() {
+        final ZLBridge bridge = new ZLBridge(webView);
+        bridge.registHandler("test", new ZLBridge.RegisterJSHandlerInterface() {
             @Override
-            public void callback(Object body, WebViewJavascriptBridge.JSCallback callBack) {
+            public void callback(Object body, ZLBridge.JSCallback callBack) {
                 ArrayList list = new ArrayList();
                 list.add(3);
                 list.add("kdkdkd");
                 callBack.callback(list,true);
             }
         });
-        bridge.registHandler("upload", new WebViewJavascriptBridge.RegisterJSHandlerInterface() {
+        bridge.registHandler("upload", new ZLBridge.RegisterJSHandlerInterface() {
             @Override
-            public void callback(Object body, WebViewJavascriptBridge.JSCallback callBack) {
+            public void callback(Object body, ZLBridge.JSCallback callBack) {
                 callBack.callback(body,false);
             }
         });
-        bridge.registUndefinedHandler(new WebViewJavascriptBridge.RegisterJSUndefinedHandlerInterface() {
+        bridge.registUndefinedHandler(new ZLBridge.RegisterJSUndefinedHandlerInterface() {
             @Override
-            public void callback(String name, Object body, WebViewJavascriptBridge.JSCallback callBack) {
+            public void callback(String name, Object body, ZLBridge.JSCallback callBack) {
                 Log.d("MainActivity", name);
             }
         });

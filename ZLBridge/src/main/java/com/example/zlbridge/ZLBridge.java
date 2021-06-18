@@ -18,14 +18,16 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-public class WebViewJavascriptBridge {
+import java.util.Random;
+
+public class ZLBridge {
     private WeakReference<WebView> weakWebViewReference;
     private boolean localJS;
     private HashMap<String,RegisterJSHandlerInterface> jsCallbackMap;
     private HashMap<String,EvaluateJSResultCallback> jsResultCallbackHashMap;
     private RegisterJSUndefinedHandlerInterface registerJSUndefinedHandlerInterface;
     static final String INTERFACE_OBJECT_NAME = "ZLBridge";
-    public WebViewJavascriptBridge(final WebView webView){
+    public ZLBridge(final WebView webView){
         this.weakWebViewReference = new WeakReference(webView);
         jsCallbackMap = new HashMap<>();
         jsResultCallbackHashMap = new HashMap<>();
@@ -33,13 +35,13 @@ public class WebViewJavascriptBridge {
             @Override
             public void callback(MsgBody message) {
                 final String name = message.name;
-               final String callID = message.callID;
-               final boolean end = message.end;
-               final Object body = message.body;
-               final String error = message.error;
+                final String callID = message.callID;
+                final boolean end = message.end;
+                final Object body = message.body;
+                final String error = message.error;
                 final String jsMethodId = message.jsMethodId;
                 if (!TextUtils.isEmpty(callID) && callID.length() > 0) {
-                   final EvaluateJSResultCallback jsCallback = jsResultCallbackHashMap.get(callID);
+                    final EvaluateJSResultCallback jsCallback = jsResultCallbackHashMap.get(callID);
                     if (jsCallback != null) {
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
@@ -51,8 +53,8 @@ public class WebViewJavascriptBridge {
                     }
                     return;
                 }
-               final RegisterJSHandlerInterface registerJSHandlerInterface = jsCallbackMap.get(name);
-               final JSCallback jsCallback = new JSCallback() {
+                final RegisterJSHandlerInterface registerJSHandlerInterface = jsCallbackMap.get(name);
+                final JSCallback jsCallback = new JSCallback() {
                     @Override
                     public void callback(Object value, boolean end) {
                         HashMap jsMap = new HashMap();
@@ -82,7 +84,10 @@ public class WebViewJavascriptBridge {
         super.finalize();
         jsCallbackMap.clear();
         jsResultCallbackHashMap.clear();
-       weakWebViewReference.get().removeJavascriptInterface(INTERFACE_OBJECT_NAME);
+        weakWebViewReference.get().removeJavascriptInterface(INTERFACE_OBJECT_NAME);
+    }
+    public WebView getWebView(){
+        return weakWebViewReference.get();
     }
     public void injectLocalJS(){
         if (this.localJS) return;
@@ -165,8 +170,7 @@ public class WebViewJavascriptBridge {
         jsMap.put("result",args);
         String ID = "";
         if (completion != null) {
-            long time=System.currentTimeMillis();
-            ID = String.valueOf(time);
+            ID = String.valueOf(System.currentTimeMillis()) + String.valueOf(new Random().nextInt(1000000));
             jsMap.put("callID",ID);
             jsResultCallbackHashMap.put(ID,completion);
         }
@@ -177,7 +181,7 @@ public class WebViewJavascriptBridge {
             @Override
             public void onReceiveValue(String value) {
                 if (value == null || value.equals("null")) return;
-                HashMap map = WebViewJavascriptBridge.converToMapWithString(value);
+                HashMap map = ZLBridge.converToMapWithString(value);
                 Object error = map.get("error");
                 if (error == null) return;
                 jsResultCallbackHashMap.remove(finalID);
@@ -259,7 +263,7 @@ public class WebViewJavascriptBridge {
         public String error;
         static MsgBody initModel(String message) {
             MsgBody body = new MsgBody();
-            HashMap data = WebViewJavascriptBridge.converToMapWithString(message);
+            HashMap data = ZLBridge.converToMapWithString(message);
             body.name = (String) data.get("name");
             body.body = data.get("body");
             body.callID = (String) data.get("callID");
@@ -270,4 +274,5 @@ public class WebViewJavascriptBridge {
         }
     }
 }
+
 

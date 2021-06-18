@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.example.zlbridge.WebViewJavascriptBridge;
+import com.example.zlbridge.ZLBridge;
 
 public class MainActivity3 extends AppCompatActivity {
 
