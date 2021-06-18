@@ -55,12 +55,12 @@ window.zlbridge.call('test',{key:"value"},(arg) => {
 ```Java
 bridge.registHandler("test", new ZLBridge.RegisterJSHandlerInterface() {
     @Override
-    public void callback(Object body, ZLBridge.JSCallback callBack) {
+    public void callback(Object body, ZLBridge.JSCallback jsCallBack) {
       ArrayList list = new ArrayList();
       list.add("js调用了原生");
       list.add(body);
       //true：js调用一次test事件只能接受一次原生回调结果，false：可以接受多次回调结果
-      callBack.callback(list,true);
+      jsCallBack.callback(list,true);
    }
 });
 ```
