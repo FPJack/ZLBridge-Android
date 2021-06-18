@@ -16,6 +16,8 @@ import com.example.zlbridge.ZLBridge;
 //import com.example.bridge.WebViewJavascriptBridge;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         webView = findViewById(R.id.webview);
         final ZLBridge bridge = new ZLBridge(webView);
 
+        
         bridge.registHandler("test", new ZLBridge.RegisterJSHandlerInterface() {
             @Override
             public void callback(Object body, ZLBridge.JSCallback callBack) {

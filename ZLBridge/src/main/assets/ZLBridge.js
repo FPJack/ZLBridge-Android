@@ -1,5 +1,5 @@
 (function () {
-    if (window.zlbridge) return;
+    if (window.zlbridge) return ;
     var zlbridge = {
         call: function(method,arg,func){
             if (typeof method != 'string') return;
@@ -33,8 +33,9 @@
             }
         },
         removeRegisted: function(method) {
-            var id = '_register_' + method;
-            if (typeof method == 'string' && window.zlbridge[id]) delete window.zlbridge[id];
+            if (typeof method != 'string') return;
+            delete window.zlbridge['_register_' + method];
+            delete window.zlbridge['_register_callback' + method];
          },
         registerWithCallback: function(method,func){
             if (typeof func == 'function' && typeof method == 'string') {
@@ -80,6 +81,7 @@
         },
         _hasNativeMethod: function(method) {
             var func = window.zlbridge['_register_' + method];
+            if (typeof func != "function")func = window.zlbridge['_register_callback' + method];
             return (func!=null||func!=undefined);
         }
     };
