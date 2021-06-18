@@ -7,6 +7,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.webkit.ConsoleMessage;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -75,6 +79,13 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("MainActivity", name);
             }
         });
+        //window.bridge未初始化
+        bridge.bridgeInitError(new ZLBridge.JSBridgeError() {
+            @Override
+            public void error(String error) {
+                Log.d("MainActivity", error);
+            }
+        });
 
         final Button button = findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -113,8 +124,14 @@ public class MainActivity extends AppCompatActivity {
 //        webView.loadUrl("http://localhost:3000");
         webView.setWebViewClient(new Client(bridge));
         webView.getSettings().setUserAgentString("User-Agent:Android");
+        webView.setWebChromeClient(new ChromeClient());
 
-
+    }
+    class  ChromeClient extends WebChromeClient {
+        public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+            // Call the old version of this function for backwards compatability.
+            return false;
+        }
     }
     class Client extends WebViewClient {
         ZLBridge bridge;
@@ -126,6 +143,17 @@ public class MainActivity extends AppCompatActivity {
             super.onPageFinished(view, url);
             bridge.injectLocalJS();
         }
+
+        @Override
+        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+            super.onReceivedError(view, request, error);
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            return super.shouldOverrideUrlLoading(view, request);
+        }
+
     }
 
     /**
