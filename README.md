@@ -19,12 +19,12 @@ dependencies {
 }
 
 ```
-# 原生bridge初始化
+## 原生bridge初始化
 ```Java
 ZLBridge bridge = new ZLBridge(webView);
 ```
 
-# H5端window.zlbridge初始化
+## H5端window.zlbridge初始化
 原生通过注入本地js代码初始化
 ```Java
 @Override
@@ -39,23 +39,23 @@ public void onPageFinished(WebView view, String url) {
  var zlbridge = require('zlbridge-js')
 ```
 
-# 原生与JS交互
+## 原生与JS交互
 
-## JS调用原生test事件
+### JS调用原生test事件
 
-### 无参数
+#### 无参数
 ```JavaScript
 window.zlbridge.call('test',(arg) => {
 
 });
 ```
-### 有参数参数
+#### 有参数参数
 ```JavaScript
 window.zlbridge.call('test',{key:"value"},(arg) => {
 
 });
 ```
-### 原生注册test事件
+#### 原生注册test事件
 ```Java
 bridge.registHandler("test", new ZLBridge.RegisterJSHandlerInterface() {
     @Override
@@ -70,9 +70,9 @@ bridge.registHandler("test", new ZLBridge.RegisterJSHandlerInterface() {
 ```
 
 
-## 原生调用js
+### 原生调用js
 
-### 原生调用JS的jsMethod事件
+#### 原生调用JS的jsMethod事件
 ```objective-c
 ArrayList list = new ArrayList();
 list.add("已收到原生调用js传过来的值");
@@ -84,7 +84,7 @@ bridge.callHander("jsMethod",list, new ZLBridge.EvaluateJSResultCallback() {
 });
 ```
 
-### js注册jsMethod事件
+#### js注册jsMethod事件
 ```JavaScript
 window.zlbridge.register("jsMethod",(arg) => {
      return arg;
@@ -98,13 +98,13 @@ window.zlbridge.registerWithCallback("jsMethod",(arg,callback) => {
 });
   ```
 
-# 通过本地注入JS脚本的，H5可以监听ZLBridge初始化完成
+## 通过本地注入JS脚本的，H5可以监听ZLBridge初始化完成
 ```JavaScript
 document.addEventListener('ZLBridgeInitReady', function() {
     consloe.log('ZLBridge初始化完成');
 },false);
   ```
-# ！！！原生传给JS的值需要支持放入Map里面可以JSONObject的对象，例如boolean,String，int，List，Map,Set等等...
+## ！！！原生传给JS的值需要支持放入Map里面可以JSONObject的对象，例如boolean,String，int，List，Map,Set等等...
 
 ## Author
 
