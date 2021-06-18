@@ -26,7 +26,7 @@ ZLBridge bridge = new ZLBridge(webView);
 @Override
 public void onPageFinished(WebView view, String url) {
   super.onPageFinished(view, url);
-  bridge.injectLocalJS(true);
+  bridge.injectLocalJS();
 }
 ```
 或者H5端导入初始化
