@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.FPJack:ZLBridge-Android:0.1.8'
+    implementation 'com.github.FPJack:ZLBridge-Android:1.1.0'
 }
 
 ```
