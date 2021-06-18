@@ -12,27 +12,23 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 ## Requirements
 
 ## 安装
-
-ZLBridge is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
-
 ```ruby
 repositories {
     maven { url "https://jitpack.io" }
 }
 
 dependencies {
-	implementation 'com.github.FPJack:ZLBridge-Android:0.1.8'
+    implementation 'com.github.FPJack:ZLBridge-Android:0.1.8'
 }
 
 ```
-# 初始化
+# 原生bridge初始化
 ```Java
-WebViewJavascriptBridge bridge = new WebViewJavascriptBridge(webView);
+ZLBridge bridge = new ZLBridge(webView);
 ```
 
-# ZLBridge初始化
-原生初始化ZLBridge
+# H5端window.zlbridge初始化
+原生通过注入本地js代码初始化
 ```Java
 @Override
 public void onPageFinished(WebView view, String url) {
@@ -40,9 +36,10 @@ public void onPageFinished(WebView view, String url) {
   bridge.injectLocalJS(true);
 }
 ```
-或者H5初始化ZLBridge
+或者H5端导入初始化
 ```JavaScript
- var ZLBridge = require('zlbridge-js')
+ //导入一次后也可以通过全局window.zlbridge拿zlbridge对象
+ var zlbridge = require('zlbridge-js')
 ```
 
 # 原生与JS交互
@@ -51,21 +48,21 @@ public void onPageFinished(WebView view, String url) {
 
 ### 无参数
 ```JavaScript
-window.ZLBridge.call('test',(arg) => {
+window.zlbridge.call('test',(arg) => {
 
 });
 ```
 ### 有参数参数
 ```JavaScript
-window.ZLBridge.call('test',{key:"value"},(arg) => {
+window.zlbridge.call('test',{key:"value"},(arg) => {
 
 });
 ```
 ### 原生注册test事件
 ```Java
-bridge.registHandler("test", new WebViewJavascriptBridge.RegisterJSHandlerInterface() {
+bridge.registHandler("test", new ZLBridge.RegisterJSHandlerInterface() {
     @Override
-    public void callback(Object body, WebViewJavascriptBridge.JSCallback callBack) {
+    public void callback(Object body, ZLBridge.JSCallback callBack) {
       ArrayList list = new ArrayList();
       list.add("js调用了原生");
       list.add(body);
@@ -81,7 +78,7 @@ bridge.registHandler("test", new WebViewJavascriptBridge.RegisterJSHandlerInterf
 ```objective-c
 ArrayList list = new ArrayList();
 list.add("已收到原生调用js传过来的值");
-bridge.callHander("jsMethod",list, new WebViewJavascriptBridge.EvaluateJSResultCallback() {
+bridge.callHander("jsMethod",list, new ZLBridge.EvaluateJSResultCallback() {
   @Override
   public void onReceiveValue(Object value,String error) {
       Log.d("MainActivity", "value:" + value);
@@ -91,13 +88,13 @@ bridge.callHander("jsMethod",list, new WebViewJavascriptBridge.EvaluateJSResultC
 
 ### js注册jsMethod事件
 ```JavaScript
-window.ZLBridge.register("jsMethod",(arg) => {
+window.zlbridge.register("jsMethod",(arg) => {
      return arg;
 });
  ```
  或者
  ```JavaScript
-window.ZLBridge.registerWithCallback("jsMethod",(arg,callback) => {
+window.zlbridge.registerWithCallback("jsMethod",(arg,callback) => {
   //ture代表原生只能监听一次回调结果，false可以连续监听，默认传为true
   callback(arg,true);
 });
