@@ -26,7 +26,6 @@ public class ZLBridge {
     private HashMap<String,RegisterJSHandlerInterface> jsCallbackMap;
     private HashMap<String,EvaluateJSResultCallback> jsResultCallbackHashMap;
     private RegisterJSUndefinedHandlerInterface registerJSUndefinedHandlerInterface;
-    private JSBridgeError jsBridgeInitError;
     static final String INTERFACE_OBJECT_NAME = "ZLBridge";
     public ZLBridge(final WebView webView){
         this.weakWebViewReference = new WeakReference(webView);
@@ -150,9 +149,6 @@ public class ZLBridge {
     public void callHander(String name,EvaluateJSResultCallback completion) {
         callHander(name,null,completion);
     }
-    public void bridgeInitError(JSBridgeError jsBridgeError){
-        this.jsBridgeInitError = jsBridgeError;
-    }
     public void hasNativeMethod(String name, final JSMethodExist jsMethodExist) {
         if (jsMethodExist == null) return;
         if (TextUtils.isEmpty(name)) {
@@ -179,7 +175,11 @@ public class ZLBridge {
             jsResultCallbackHashMap.put(ID,completion);
         }
         JSONObject jsonObject = new JSONObject(jsMap);
-        String js = "try{window.zlbridge._nativeCall('"+ name +"'," + "'" + jsonObject.toString() +"');}catch(e){window.ZLBridge.errorMessage(e.message);}";
+        String js = "try{" +
+                           "window.zlbridge._nativeCall('"+ name +"'," + "'" + jsonObject.toString() +"');" +
+                       "}catch(error){" +
+                           "window.ZLBridge.postMessage(JSON.stringify({error:error.message,callID:'" + ID + "',end:true}));" +
+                       "}";
         final String finalID = ID;
         evaluateJavascript(js, new ValueCallback<String>() {
             @Override
@@ -242,10 +242,6 @@ public class ZLBridge {
         @JavascriptInterface
         public void postMessage(String message) {
             messageHandler.callback(MsgBody.initModel(message));
-        }
-        @JavascriptInterface
-        public void errorMessage(String error){
-            if (ZLBridge.this.jsBridgeInitError != null) ZLBridge.this.jsBridgeInitError.error(error);
         }
     }
     static private HashMap converToMapWithString(String string) {
