@@ -27,10 +27,10 @@ public class ZLBridge {
     private long callbackUniqueKey = 0;
     static final String INTERFACE_OBJECT_NAME = "ZLBridge";
 
-    public synchronized void setCallbackUniqueKey(long callbackUniqueKey) {
+    private synchronized void setCallbackUniqueKey(long callbackUniqueKey) {
         this.callbackUniqueKey = callbackUniqueKey;
     }
-    public synchronized long getCallbackUniqueKey() {
+    private synchronized long getCallbackUniqueKey() {
         return callbackUniqueKey;
     }
 
