@@ -18,15 +18,22 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Random;
-
 public class ZLBridge {
     private WeakReference<WebView> weakWebViewReference;
     private boolean localJS;
     private HashMap<String,RegisterJSHandlerInterface> jsCallbackMap;
     private HashMap<String,EvaluateJSResultCallback> jsResultCallbackHashMap;
     private RegisterJSUndefinedHandlerInterface registerJSUndefinedHandlerInterface;
+    private long callbackUniqueKey = 0;
     static final String INTERFACE_OBJECT_NAME = "ZLBridge";
+
+    public synchronized void setCallbackUniqueKey(long callbackUniqueKey) {
+        this.callbackUniqueKey = callbackUniqueKey;
+    }
+    public synchronized long getCallbackUniqueKey() {
+        return callbackUniqueKey;
+    }
+
     public ZLBridge(final WebView webView){
         this.weakWebViewReference = new WeakReference(webView);
         jsCallbackMap = new HashMap<>();
@@ -170,7 +177,8 @@ public class ZLBridge {
         jsMap.put("result",args);
         String ID = "";
         if (completion != null) {
-            ID = String.valueOf(System.currentTimeMillis()) + String.valueOf(new Random().nextInt(1000000));
+            this.setCallbackUniqueKey(this.getCallbackUniqueKey() + 1);
+            ID = String.valueOf(this.getCallbackUniqueKey());
             jsMap.put("callID",ID);
             jsResultCallbackHashMap.put(ID,completion);
         }
