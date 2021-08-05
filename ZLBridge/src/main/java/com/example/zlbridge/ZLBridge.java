@@ -177,8 +177,9 @@ public class ZLBridge {
         jsMap.put("result",args);
         String ID = "";
         if (completion != null) {
-            this.setCallbackUniqueKey(this.getCallbackUniqueKey() + 1);
-            ID = String.valueOf(this.getCallbackUniqueKey());
+            final long callbackUniqueKey = this.getCallbackUniqueKey() + 1;
+            this.setCallbackUniqueKey(callbackUniqueKey);
+            ID = String.valueOf(callbackUniqueKey);
             jsMap.put("callID",ID);
             jsResultCallbackHashMap.put(ID,completion);
         }
