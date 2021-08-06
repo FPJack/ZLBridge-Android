@@ -10,6 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a9ef5695-c5d3-4871-ba0c-898054d46242" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ZLBridge/src/main/java/com/example/zlbridge/ZLBridge.java" beforeDir="false" afterPath="$PROJECT_DIR$/ZLBridge/src/main/java/com/example/zlbridge/ZLBridge.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -178,10 +180,10 @@
     <state width="1358" height="225" key="GridCell.Tab.0.right/0.23.1440.826@0.23.1440.826" timestamp="1623835461121" />
     <state width="1358" height="280" key="GridCell.Tab.0.right/0.23.1440.827@0.23.1440.827" timestamp="1624002807964" />
     <state width="1358" height="172" key="GridCell.Tab.0.right/0.23.1440.828@0.23.1440.828" timestamp="1623987955689" />
-    <state x="389" y="248" key="com.intellij.ide.util.TipDialog" timestamp="1628128789608">
+    <state x="389" y="248" key="com.intellij.ide.util.TipDialog" timestamp="1628213732997">
       <screen x="0" y="23" width="1440" height="824" />
     </state>
-    <state x="389" y="248" key="com.intellij.ide.util.TipDialog/0.23.1440.824@0.23.1440.824" timestamp="1628128789608" />
+    <state x="389" y="248" key="com.intellij.ide.util.TipDialog/0.23.1440.824@0.23.1440.824" timestamp="1628213732997" />
     <state x="389" y="248" key="com.intellij.ide.util.TipDialog/0.23.1440.825@0.23.1440.825" timestamp="1623398870224" />
   </component>
 </project>

@@ -26,14 +26,6 @@ public class ZLBridge {
     private RegisterJSUndefinedHandlerInterface registerJSUndefinedHandlerInterface;
     private long callbackUniqueKey = 0;
     static final String INTERFACE_OBJECT_NAME = "ZLBridge";
-
-    private synchronized void setCallbackUniqueKey(long callbackUniqueKey) {
-        this.callbackUniqueKey = callbackUniqueKey;
-    }
-    private synchronized long getCallbackUniqueKey() {
-        return callbackUniqueKey;
-    }
-
     public ZLBridge(final WebView webView){
         this.weakWebViewReference = new WeakReference(webView);
         jsCallbackMap = new HashMap<>();
@@ -177,9 +169,10 @@ public class ZLBridge {
         jsMap.put("result",args);
         String ID = "";
         if (completion != null) {
-            final long callbackUniqueKey = this.getCallbackUniqueKey() + 1;
-            this.setCallbackUniqueKey(callbackUniqueKey);
-            ID = String.valueOf(callbackUniqueKey);
+            synchronized (ZLBridge.this){
+                this.callbackUniqueKey += 1;
+                ID = String.valueOf(this.callbackUniqueKey);
+            }
             jsMap.put("callID",ID);
             jsResultCallbackHashMap.put(ID,completion);
         }
