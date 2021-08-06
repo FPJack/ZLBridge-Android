@@ -18,6 +18,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+
 public class ZLBridge {
     private WeakReference<WebView> weakWebViewReference;
     private boolean localJS;
@@ -163,7 +165,7 @@ public class ZLBridge {
             }
         });
     }
-    public void callHander(String name, ArrayList args, final EvaluateJSResultCallback completion) {
+    public void callHander(String name, List args, final EvaluateJSResultCallback completion) {
         args = args == null ? new ArrayList() : args;
         HashMap<String,Object> jsMap = new HashMap();
         jsMap.put("result",args);

@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.example.zlbridge.ZLBridge;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     WebView webView;
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         webView = findViewById(R.id.webview);
         final ZLBridge bridge = new ZLBridge(webView);
+       
 
         
         bridge.registHandler("test", new ZLBridge.RegisterJSHandlerInterface() {
